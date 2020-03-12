@@ -31,10 +31,27 @@ function createNewToy(toyObject) {
       toyPicture.classList.add('toy-avatar')
       toyPicture.src = toyImage
     let toyLikes = document.createElement('p')
+      toyLikes.id = 'likes'
       toyLikes.innerText = toyObject.likes
     let button = document.createElement('button')
       button.classList.add('like-btn')
       button.innerText = 'Like'
+      button.addEventListener("click", (event) => {
+        event.preventDefault()
+        let currentLikes = parseInt(event.target.parentElement.getElementsByTagName('p').likes.innerText)
+        currentLikes += 1
+        fetch(`http://localhost:3000/toys/${toyObject.id}`, {
+          method: 'PATCH',
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify({
+            "likes": currentLikes
+          })
+        })
+        event.target.parentElement.getElementsByTagName('p').likes.innerText = currentLikes.toString()
+      })
   toyCard.append(toyHeader, toyPicture, toyLikes, button)
   toyList.appendChild(toyCard)
 } 
