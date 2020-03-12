@@ -33,10 +33,10 @@ function createNewToy(toyObject) {
     let toyLikes = document.createElement('p')
       toyLikes.id = 'likes'
       toyLikes.innerText = toyObject.likes
-    let button = document.createElement('button')
-      button.classList.add('like-btn')
-      button.innerText = 'Like'
-      button.addEventListener("click", (event) => {
+    let likeButton = document.createElement('button')
+      likeButton.classList.add('like-btn')
+      likeButton.innerText = 'Like'
+      likeButton.addEventListener("click", (event) => {
         event.preventDefault()
         let currentLikes = parseInt(event.target.parentElement.getElementsByTagName('p').likes.innerText)
         currentLikes += 1
@@ -52,7 +52,17 @@ function createNewToy(toyObject) {
         })
         event.target.parentElement.getElementsByTagName('p').likes.innerText = currentLikes.toString()
       })
-  toyCard.append(toyHeader, toyPicture, toyLikes, button)
+    let deleteButton = document.createElement('button')
+      deleteButton.classList.add('delete-btn')
+      deleteButton.innerText = 'Delete'
+      deleteButton.addEventListener("click", (event) => {
+        event.preventDefault()
+        fetch(`http://localhost:3000/toys/${toyObject.id}`, {
+          method: 'DELETE'
+        })
+        toyCard.remove()
+      })
+  toyCard.append(toyHeader, toyPicture, toyLikes, likeButton, deleteButton)
   toyList.appendChild(toyCard)
 } 
 
